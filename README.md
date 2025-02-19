@@ -1,8 +1,7 @@
 <h1>HTACCESS FOR WORDPRESS SECURTY </h1>
-![Danger](https://github.com/user-attachments/assets/0ac9d84e-5f71-4012-a386-2429f4ac039c)  <br>
+![DanGer](https://raw.githubusercontent.com/moursalinislambd/.htaccess-for-wordpress-security/refs/heads/main/danger.gif)
 
 <h2> Features of This HTACCESS CODE </h2>
-
 	<ul>
     	<li>Block WordPress files from outside access</li>
         <li>No access to the install.php</li>
@@ -24,14 +23,10 @@
                 <li>Permissions Policy (Modify as needed)</li>
             </ul>
         <li>Block direct access to the uploads folder</li>
-        <li> <b>8G FIREWALL v1.4 20250120
-# https://perishablepress.com/8g-firewall </b></li>
+        <li> <b>8G FIREWALL v1.4 20250120 https://perishablepress.com/8g-firewall </b></li>
     </ul>
-    
     <footer> 
     <center>
-    <div class="footer-copyright text-center"> <span>Copyright © 2025 Moursalin islam | Developed by <a target="_blank" href="https://www.w3softs.com"> <span style="color:#007bff;">One</span><span style="color:#28a745;">xus</span> <span style="color: #797b7e;">De</span><span style="color:#6c757d;">v</span> </a></span> </div>
+    <div class="footer-copyright text-center"> <span>Copyright © 2025 Moursalin islam | Developed by <a target="_blank" href="https://onexusdev.mosquesofbangladesh.xyz/"> <span style="color:#007bff;">One</span><span style="color:#28a745;">xus</span> <span style="color: #797b7e;">De</span><span style="color:#6c757d;">v</span> </a></span> </div>
     </center>
  </footer>
-
-
