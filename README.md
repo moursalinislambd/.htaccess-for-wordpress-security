@@ -1,5 +1,5 @@
 <h1>HTACCESS FOR WORDPRESS SECURTY </h1>
-![DanGer](https://raw.githubusercontent.com/moursalinislambd/.htaccess-for-wordpress-security/refs/heads/main/danger.gif)
+![DANGER] (https://raw.githubusercontent.com/moursalinislambd/.htaccess-for-wordpress-security/refs/heads/main/danger.gif)
 
 <h2> Features of This HTACCESS CODE </h2>
 	<ul>
