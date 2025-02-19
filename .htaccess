@@ -70,32 +70,34 @@ RewriteRule ^ – [NC,F,L]
 # -----------------------------------------------------------------------------
 #  HTTP SECURITY HEADER 
 # ----------------------------------------------------------------------------
-<IfModule mod_headers.c>
-    # Prevent XSS attacks
-    Header set X-XSS-Protection "1; mode=block"
+# BEGIN Security Headers
 
-    # Prevent clickjacking
-    Header set X-Frame-Options "DENY"
+# Prevent Clickjacking
+Header set X-Frame-Options "SAMEORIGIN"
 
-    # Prevent MIME type sniffing
-    Header set X-Content-Type-Options "nosniff"
+# Prevent MIME-type sniffing
+Header set X-Content-Type-Options "nosniff"
 
-    # Content Security Policy (CSP)
-    Header set Content-Security-Policy "default-src 'self';"
+# Content Security Policy (Modify as needed)
+Header set Content-Security-Policy "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' https: data:;"
 
-    # Referrer Policy
-    Header set Referrer-Policy "no-referrer"
+# Referrer Policy
+Header set Referrer-Policy "strict-origin-when-cross-origin"
 
-    # Strict Transport Security (HSTS)
-    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
-     # Set Permissions-Policy header
-    Header set Permissions-Policy "geolocation=(self), microphone=(), camera=(), fullscreen=(self), payment=(self)"
+# HTTP Strict Transport Security (HSTS) - Requires HTTPS
+Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
-    # Disable caching for sensitive files
-    <FilesMatch "\.(htaccess|htpasswd|ini|log|conf)$">
-        Header set X-Robots-Tag "noindex, nofollow"
-    </FilesMatch>
-</IfModule>
+# Permissions Policy (Modify as needed)
+Header set Permissions-Policy "geolocation=(self), microphone=(), camera=(), fullscreen=*"
+
+# END Security Headers
+
+# Block direct access to the uploads folder
+RewriteCond %{REQUEST_URI} ^/wp-content/uploads/ [NC]
+RewriteRule .* - [F,L]
+
+# Enable mod_rewrite
+RewriteEngine On
 
 # 8G FIREWALL v1.4 20250120
 # https://perishablepress.com/8g-firewall/
