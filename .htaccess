@@ -32,11 +32,13 @@ Deny from all
 Order allow,deny
 Deny from all
 </files>
+
 #No access to the .htaccess und .htpasswd
 <FilesMatch "(\.htaccess|\.htpasswd)">
   Order deny,allow
   Deny from all
 </FilesMatch>
+
 # Block access to includes folder
 <IfModule mod_rewrite.c>
 RewriteEngine On
@@ -92,8 +94,9 @@ Header set Permissions-Policy "geolocation=(self), microphone=(), camera=(), ful
 
 # END Security Headers
 
-# Block direct access to the uploads folder
+# Block direct access to the uploads folder, except for image files
 RewriteCond %{REQUEST_URI} ^/wp-content/uploads/ [NC]
+RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|gif|bmp|webp|svg)$ [NC]
 RewriteRule .* - [F,L]
 
 # 8G FIREWALL v1.4 20250120
