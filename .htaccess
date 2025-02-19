@@ -96,9 +96,6 @@ Header set Permissions-Policy "geolocation=(self), microphone=(), camera=(), ful
 RewriteCond %{REQUEST_URI} ^/wp-content/uploads/ [NC]
 RewriteRule .* - [F,L]
 
-# Enable mod_rewrite
-RewriteEngine On
-
 # 8G FIREWALL v1.4 20250120
 # https://perishablepress.com/8g-firewall/
 
