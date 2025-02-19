@@ -94,9 +94,9 @@ Header set Permissions-Policy "geolocation=(self), microphone=(), camera=(), ful
 
 # END Security Headers
 
-# Block direct access to the uploads folder, except for image files
+# Block direct access to the uploads folder, except for allowed file types
 RewriteCond %{REQUEST_URI} ^/wp-content/uploads/ [NC]
-RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|gif|bmp|webp|svg)$ [NC]
+RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|gif|bmp|webp|svg|css|js)$ [NC]
 RewriteRule .* - [F,L]
 
 # 8G FIREWALL v1.4 20250120
