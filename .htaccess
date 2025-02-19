@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------
 #   Block WordPress files from outside access
-# ----------------------------------------------------------------------	 
+# ----------------------------------------------------------------------	
 # No access to the install.php
 <files install.php>
 Order allow,deny
@@ -33,7 +33,7 @@ Order allow,deny
 Deny from all
 </files>
 
-#No access to the .htaccess und .htpasswd
+# No access to the .htaccess und .htpasswd
 <FilesMatch "(\.htaccess|\.htpasswd)">
   Order deny,allow
   Deny from all
@@ -49,6 +49,7 @@ RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
 RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
 RewriteRule ^wp-includes/theme-compat/ - [F,L]
 </IfModule>
+
 # ----------------------------------------------------------------------
 #   Block WordPress Author Scans
 # ----------------------------------------------------------------------
@@ -58,7 +59,8 @@ RewriteBase /
 RewriteCond %{REQUEST_URI} ^/wp-json/wp/v2/users [OR]
 RewriteCond %{QUERY_STRING} (author=\d+) [NC]
 RewriteRule ^ – [NC,F,L]
-</ifModule>
+</IfModule>
+
 # ----------------------------------------------------------------------
 #   Protect your WordPress Login with HTTP Authentification
 # ----------------------------------------------------------------------
@@ -69,6 +71,7 @@ RewriteRule ^ – [NC,F,L]
 #AuthUserFile /usr/local/www/apache24/your-path/your-domain.com/.htpasswd 
 #require valid-user
 #</Files>
+
 # -----------------------------------------------------------------------------
 #  HTTP SECURITY HEADER 
 # ----------------------------------------------------------------------------
@@ -79,9 +82,6 @@ Header set X-Frame-Options "SAMEORIGIN"
 
 # Prevent MIME-type sniffing
 Header set X-Content-Type-Options "nosniff"
-
-# Content Security Policy (Modify as needed)
-Header set Content-Security-Policy "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' https: data:;"
 
 # Referrer Policy
 Header set Referrer-Policy "strict-origin-when-cross-origin"
