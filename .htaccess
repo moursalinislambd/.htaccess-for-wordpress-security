@@ -70,17 +70,24 @@ RewriteRule ^ – [NC,F,L]
 # -----------------------------------------------------------------------------
 #  HTTP SECURITY HEADER 
 # ----------------------------------------------------------------------------
-<ifModule mod_headers.c>
-Header set Strict-Transport-Security "max-age=31536000" env=HTTPS
-Header set X-XSS-Protection "1; mode=block"
-Header set X-Content-Type-Options nosniff
-Header set X-Frame-Options DENY
-Header set Referrer-Policy: no-referrer-when-downgrade
-</ifModule>
-
-
-
-
+<IfModule mod_headers.c>
+    # Prevent XSS attacks
+    Header set X-XSS-Protection "1; mode=block"
+    # Prevent clickjacking
+    Header set X-Frame-Options "DENY"
+    # Prevent MIME type sniffing
+    Header set X-Content-Type-Options "nosniff"
+    # Content Security Policy (CSP)
+    Header set Content-Security-Policy "default-src 'self';"
+    # Referrer Policy
+    Header set Referrer-Policy "no-referrer"
+    # Strict Transport Security (HSTS)
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+    # Disable caching for sensitive files
+    <FilesMatch "\.(htaccess|htpasswd|ini|log|conf)$">
+        Header set X-Robots-Tag "noindex, nofollow"
+    </FilesMatch>
+</IfModule>
 
 # 8G FIREWALL v1.4 20250120
 # https://perishablepress.com/8g-firewall/
