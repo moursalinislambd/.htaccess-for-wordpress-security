@@ -73,16 +73,24 @@ RewriteRule ^ – [NC,F,L]
 <IfModule mod_headers.c>
     # Prevent XSS attacks
     Header set X-XSS-Protection "1; mode=block"
+
     # Prevent clickjacking
     Header set X-Frame-Options "DENY"
+
     # Prevent MIME type sniffing
     Header set X-Content-Type-Options "nosniff"
+
     # Content Security Policy (CSP)
     Header set Content-Security-Policy "default-src 'self';"
+
     # Referrer Policy
     Header set Referrer-Policy "no-referrer"
+
     # Strict Transport Security (HSTS)
     Header set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+     # Set Permissions-Policy header
+    Header set Permissions-Policy "geolocation=(self), microphone=(), camera=(), fullscreen=(self), payment=(self)"
+
     # Disable caching for sensitive files
     <FilesMatch "\.(htaccess|htpasswd|ini|log|conf)$">
         Header set X-Robots-Tag "noindex, nofollow"
