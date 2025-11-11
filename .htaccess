@@ -1,45 +1,33 @@
 # ----------------------------------------------------------------------
-#   Block WordPress files from outside access
-# ----------------------------------------------------------------------	
-# No access to the install.php
-<files install.php>
-Order allow,deny
-Deny from all
-</files>
- 
-# No access to the wp-config.php 
-<files wp-config.php>
-Order allow,deny
-Deny from all
-</files>
- 
-# No access to the readme.html
-<files readme.html>
- Order Allow,Deny
- Deny from all
- Satisfy all
+#   Block Sensitive WordPress Files
+# ----------------------------------------------------------------------
+<Files install.php>
+Require all denied
 </Files>
- 
-# No access to the liesmich.html for DE Edition
-<Files liesmich.html>
- Order Allow,Deny
- Deny from all
- Satisfy all
-</Files>
- 
-# No error log access 
-<files error_log>
-Order allow,deny
-Deny from all
-</files>
 
-# No access to the .htaccess und .htpasswd
+<Files wp-config.php>
+Require all denied
+</Files>
+
+<Files readme.html>
+Require all denied
+</Files>
+
+<Files liesmich.html>
+Require all denied
+</Files>
+
+<Files error_log>
+Require all denied
+</Files>
+
 <FilesMatch "(\.htaccess|\.htpasswd)">
-  Order deny,allow
-  Deny from all
+Require all denied
 </FilesMatch>
 
-# Block access to includes folder
+# ----------------------------------------------------------------------
+#   Block Access to Includes Folder
+# ----------------------------------------------------------------------
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
@@ -51,41 +39,53 @@ RewriteRule ^wp-includes/theme-compat/ - [F,L]
 </IfModule>
 
 # ----------------------------------------------------------------------
-#   Block WordPress Author Scans
+#   Block WordPress REST API Enumeration (Users, Posts, Pages)
 # ----------------------------------------------------------------------
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteBase /
-RewriteCond %{REQUEST_URI} ^/wp-json/wp/v2/users [OR]
+
+# Block Users
+RewriteCond %{REQUEST_URI} ^/wp-json/wp/v2/users [NC]
+RewriteCond %{HTTP_COOKIE} !wordpress_logged_in_ [NC]
+RewriteRule ^ - [F,L]
+
+# Block Posts
+RewriteCond %{REQUEST_URI} ^/wp-json/wp/v2/posts [NC]
+RewriteCond %{HTTP_COOKIE} !wordpress_logged_in_ [NC]
+RewriteRule ^ - [F,L]
+
+# Block Pages
+RewriteCond %{REQUEST_URI} ^/wp-json/wp/v2/pages [NC]
+RewriteCond %{HTTP_COOKIE} !wordpress_logged_in_ [NC]
+RewriteRule ^ - [F,L]
+
+# Block Author scans ?author=1
 RewriteCond %{QUERY_STRING} (author=\d+) [NC]
-RewriteRule ^ – [NC,F,L]
+RewriteRule ^ - [F,L]
 </IfModule>
-# -----------------------------------------------------------------------------
-#  HTTP SECURITY HEADER 
-# ----------------------------------------------------------------------------
-# BEGIN Security Headers
-
-# Prevent Clickjacking
+# ----------------------------------------------------------------------
+#   HTTP SECURITY HEADERS
+# ----------------------------------------------------------------------
+<IfModule mod_headers.c>
 Header set X-Frame-Options "SAMEORIGIN"
-
-# Prevent MIME-type sniffing
 Header set X-Content-Type-Options "nosniff"
-
-# Referrer Policy
 Header set Referrer-Policy "strict-origin-when-cross-origin"
-
-# HTTP Strict Transport Security (HSTS) - Requires HTTPS
 Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-
-# Permissions Policy (Modify as needed)
 Header set Permissions-Policy "geolocation=(self), microphone=(), camera=(), fullscreen=*"
+</IfModule>
 
-# END Security Headers
-
-# Block direct access to the uploads folder, except for allowed file types
+# ----------------------------------------------------------------------
+# Block direct access to uploads except specific file types
+# ----------------------------------------------------------------------
 RewriteCond %{REQUEST_URI} ^/wp-content/uploads/ [NC]
 RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|gif|bmp|webp|svg|css|js)$ [NC]
 RewriteRule .* - [F,L]
+
+# ----------------------------------------------------------------------
+#   BEGIN WordPress (leave untouched)
+# ----------------------------------------------------------------------
+# (Your WordPress auto-rules below this line)
+
 
 # 8G FIREWALL v1.5 20250927
 # https://perishablepress.com/8g-firewall/
